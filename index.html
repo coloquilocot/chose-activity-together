@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>💕 Une question importante...</title>
+  <title>💕 Une petite proposition...</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
 
@@ -269,10 +269,10 @@
 
 <div class="card page active" id="page1">
   <span class="card-emoji">🌸</span>
-  <h1>Veux-tu faire un date avec moi ?</h1>
+  <h1>Et si on faisait une activité ensemble&nbsp;?</h1>
   <div class="divider"></div>
   <div class="btn-row" id="btnRow">
-    <button class="btn btn-yes" onclick="goTo('page2')">Oui 💕</button>
+    <button class="btn btn-yes" onclick="goTo('page2')">Grave ! 💕</button>
     <button class="btn btn-no" id="noBtn">Non</button>
   </div>
 </div>
@@ -426,13 +426,13 @@
     choices[key] = value; 
   }
 
-  // Config des coordonnées
+  // Config des coordonnées (À modifier !)
   const MON_NUMERO = "0684755797"; 
   const MON_EMAIL = "blad.deborah@yahoo.com";
 
   // Envoi par SMS
   function sendSummarySMS() {
-    const message = `Détails de notre Date :\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
+    const message = `Détails de notre rendez-vous :\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const separator = isIOS ? '&' : '?';
     window.location.href = `sms:${MON_NUMERO}${separator}body=${encodeURIComponent(message)}`;
@@ -440,8 +440,8 @@
 
   // Envoi par Mail
   function sendSummaryEmail() {
-    const subject = "Notre Date ! 💕";
-    const body = `Détails de notre Date :\n\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
+    const subject = "Notre Programme ! 💕";
+    const body = `Détails de notre rendez-vous :\n\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
     window.location.href = `mailto:${MON_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
@@ -482,7 +482,7 @@
       'DTSTAMP:' + new Date().toISOString().replace(/[-:.]/g,'').slice(0,15) + 'Z',
       'DTSTART:' + dtStart,
       'DTEND:' + dtEnd,
-      'SUMMARY:💕 Notre date (${choices.food} / ${choices.activity}) 💕',
+      'SUMMARY:💕 Notre activité (${choices.food} / ${choices.activity}) 💕',
       'DESCRIPTION:Au programme : manger du ${choices.food} et faire l\'activité : ${choices.activity} !',
       'END:VEVENT',
       'END:VCALENDAR'
@@ -492,7 +492,7 @@
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
     a.href     = url;
-    a.download = 'notre-date.ics';
+    a.download = 'notre-activite.ics';
     a.click();
     URL.revokeObjectURL(url);
   }
