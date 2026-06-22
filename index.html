@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💕 Une question importante...</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffb6c1 0%, #ff85a1 40%, #ffaec0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Lato', sans-serif;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    /* Petits cœurs décoratifs */
+    body::before {
+      content: '💕 ♡ 💖 ♡ 💕 ♡ 💗 ♡ 💕 ♡ 💖';
+      position: fixed;
+      top: 10px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 18px;
+      opacity: 0.35;
+      pointer-events: none;
+      letter-spacing: 8px;
+    }
+    body::after {
+      content: '♡ 💕 ♡ 💖 ♡ 💗 ♡ 💕 ♡ 💖 ♡';
+      position: fixed;
+      bottom: 10px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 18px;
+      opacity: 0.35;
+      pointer-events: none;
+      letter-spacing: 8px;
+    }
+
+    /* CARD */
+    .card {
+      background: #fff;
+      border-radius: 28px;
+      padding: 48px 44px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(220, 80, 120, 0.22), 0 4px 16px rgba(0,0,0,0.08);
+      text-align: center;
+      position: relative;
+      overflow: visible;
+    }
+
+    .card-emoji {
+      font-size: 52px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: #c0395a;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .card p {
+      color: #a0607a;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* BOUTONS PRINCIPAUX */
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 50px;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #ff85a1, #e0305a);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(220,50,100,0.35);
+    }
+    .btn-yes:hover { transform: scale(1.06); box-shadow: 0 8px 28px rgba(220,50,100,0.45); }
+
+    .btn-no {
+      background: #f5f5f5;
+      color: #bbb;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: none;
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #ffb6c1, #ff85a1);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(220,100,130,0.3);
+    }
+    .btn-secondary:hover { transform: scale(1.05); }
+
+    /* BOUTONS ACTIONS */
+    .btn-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      min-height: 60px;
+    }
+
+    /* GRILLE CHOIX (food / activité) */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .choice-btn {
+      background: #fff5f7;
+      border: 2px solid #ffc1d0;
+      border-radius: 16px;
+      padding: 16px 8px;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Lato', sans-serif;
+    }
+    .choice-btn:hover {
+      background: linear-gradient(135deg, #ffe0ea, #ffc1d0);
+      border-color: #e0305a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220,50,100,0.18);
+    }
+    .choice-btn .emoji { font-size: 38px; }
+    .choice-btn .label { font-size: 0.78rem; font-weight: 700; color: #c0395a; }
+
+    /* DATE / HEURE */
+    input[type="date"], input[type="time"] {
+      border: 2px solid #ffc1d0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-family: 'Lato', sans-serif;
+      color: #c0395a;
+      background: #fff5f7;
+      outline: none;
+      width: 100%;
+      margin-bottom: 12px;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: #e0305a; }
+
+    label {
+      display: block;
+      text-align: left;
+      color: #a0607a;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #ffb6c1, #e0305a);
+      border-radius: 2px;
+      margin: 0 auto 24px;
+    }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* CONFETTIS fin */
+    @keyframes fall {
+      0%   { transform: translateY(-40px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti {
+      position: fixed;
+      top: 0;
+      font-size: 22px;
+      pointer-events: none;
+      animation: fall linear forwards;
+      z-index: 999;
+    }
+
+    /* CALENDAR LINK */
+    .cal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0f0f5;
+      border-radius: 12px;
+      padding: 10px 18px;
+      color: #555;
+      font-size: 0.88rem;
+      text-decoration: none;
+      margin-top: 24px;
+      margin-bottom: 20px;
+      transition: background 0.15s;
+      cursor: pointer;
+      border: none;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+    }
+    .cal-link:hover { background: #e5e5ef; }
+
+    .final-msg {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: #c0395a;
+      line-height: 1.7;
+    }
+
+    /* Zone des boutons de partage finaux */
+    .share-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .share-block {
+      flex: 1;
+      min-width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .share-hint {
+      font-size: 0.8rem;
+      color: #a0607a;
+      font-style: italic;
+    }
+
+    @media (max-width: 420px) {
+      .card { padding: 32px 20px; }
+      .choice-grid { grid-template-columns: repeat(2, 1fr); }
+      .share-container { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card page active" id="page1">
+  <span class="card-emoji">🌸</span>
+  <h1>Veux-tu faire un date avec moi ?</h1>
+  <div class="divider"></div>
+  <div class="btn-row" id="btnRow">
+    <button class="btn btn-yes" onclick="goTo('page2')">Oui 💕</button>
+    <button class="btn btn-no" id="noBtn">Non</button>
+  </div>
+</div>
+
+<div class="card page" id="page2">
+  <span class="card-emoji">😱</span>
+  <h1>Attends, t'as vraiment dit oui&nbsp;??????</h1>
+  <div class="divider"></div>
+  <p>OMG OMG OMG OMG OMG OMG 💖</p>
+  <button class="btn btn-secondary" onclick="goTo('page3')">Oui oui, abrège 😄</button>
+</div>
+
+<div class="card page" id="page3">
+  <span class="card-emoji">📅</span>
+  <h1>Donc... tu es libre quand&nbsp;?</h1>
+  <div class="divider"></div>
+
+  <label for="dateInput">Choisis une date</label>
+  <input type="date" id="dateInput" onchange="saveDateTime()" />
+
+  <label for="timeInput">À quelle heure ?</label>
+  <input type="time" id="timeInput" onchange="saveDateTime()" />
+
+  <button class="btn btn-yes" style="margin-top: 15px;" onclick="goTo('page4')">Voir les idées ✨</button>
+</div>
+
+<div class="card page" id="page4">
+  <span class="card-emoji">🍽️</span>
+  <h1>Qu'est-ce que tu veux manger&nbsp;?</h1>
+  <div class="divider"></div>
+  <div class="choice-grid">
+    <button class="choice-btn" onclick="choose('food','Pizza'); goTo('page5')">
+      <span class="emoji">🍕</span><span class="label">Pizza</span>
+    </button>
+    <button class="choice-btn" onclick="choose('food','Sushis'); goTo('page5')">
+      <span class="emoji">🍣</span><span class="label">Sushis</span>
+    </button>
+    <button class="choice-btn" onclick="choose('food','Burger'); goTo('page5')">
+      <span class="emoji">🍔</span><span class="label">Burger</span>
+    </button>
+    <button class="choice-btn" onclick="choose('food','Pâtes'); goTo('page5')">
+      <span class="emoji">🍝</span><span class="label">Pâtes</span>
+    </button>
+    <button class="choice-btn" onclick="choose('food','Tacos'); goTo('page5')">
+      <span class="emoji">🌮</span><span class="label">Tacos</span>
+    </button>
+    <button class="choice-btn" onclick="choose('food','Bistrot'); goTo('page5')">
+      <span class="emoji">🥩</span><span class="label">Bistrot</span>
+    </button>
+  </div>
+</div>
+
+<div class="card page" id="page5">
+  <span class="card-emoji">🎉</span>
+  <h1>Choisis ton activité</h1>
+  <div class="divider"></div>
+  <div class="choice-grid">
+    <button class="choice-btn" onclick="choose('activity','Cinéma'); goTo('page6')">
+      <span class="emoji">🎬</span><span class="label">Cinéma</span>
+    </button>
+    <button class="choice-btn" onclick="choose('activity','Jeux de société'); goTo('page6')">
+      <span class="emoji">🎲</span><span class="label">Jeux de société</span>
+    </button>
+    <button class="choice-btn" onclick="choose('activity','Jeux vidéos'); goTo('page6')">
+      <span class="emoji">🎮</span><span class="label">Jeux vidéos</span>
+    </button>
+    <button class="choice-btn" onclick="choose('activity','Activités créatives'); goTo('page6')">
+      <span class="emoji">🎨</span><span class="label">Activités créatives</span>
+    </button>
+    <button class="choice-btn" onclick="choose('activity','TV time'); goTo('page6')">
+      <span class="emoji">🛋️</span><span class="label">TV time</span>
+    </button>
+    <button class="choice-btn" onclick="choose('activity','Make love'); goTo('page6')">
+      <span class="emoji">💞</span><span class="label">Make love</span>
+    </button>
+  </div>
+</div>
+
+<div class="card page" id="page6">
+  <span class="card-emoji">💌</span>
+  <div class="divider"></div>
+  <p class="final-msg">
+    Je suis heureuse que tu n'aies pas dit non.<br/><br/>
+    Sois prêt·e, je viens te chercher. 😘<br/><br/>
+  </p>
+  
+  <div class="share-container">
+    <div class="share-block">
+      <button class="btn btn-yes" onclick="sendSummarySMS()">Par SMS 💬</button>
+      <span class="share-hint">(Si tu ouvres ça sur tel)</span>
+    </div>
+    
+    <div class="share-block">
+      <button class="btn btn-yes" onclick="sendSummaryEmail()">Par Mail ✉️</button>
+      <span class="share-hint">(Si tu ouvres ça sur ordi)</span>
+    </div>
+  </div>
+  
+  <button class="cal-link" id="calBtn" onclick="addToCalendar()">
+    🗓️ Ajouter à mon calendrier (Pour toi)
+  </button>
+</div>
+
+<script>
+  const noBtn = document.getElementById('noBtn');
+  const btnRow = document.getElementById('btnRow');
+
+  function getRandomPos() {
+    const btn = noBtn.getBoundingClientRect();
+    const maxX = window.innerWidth - btn.width - 20;
+    const maxY = window.innerHeight - btn.height - 20;
+    return {
+      x: Math.max(10, Math.random() * maxX),
+      y: Math.max(10, Math.random() * maxY)
+    };
+  }
+
+  noBtn.addEventListener('mouseenter', () => {
+    const pos = getRandomPos();
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = pos.x + 'px';
+    noBtn.style.top  = pos.y + 'px';
+    noBtn.style.zIndex = 100;
+  });
+
+  noBtn.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const pos = getRandomPos();
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = pos.x + 'px';
+    noBtn.style.top  = pos.y + 'px';
+    noBtn.style.zIndex = 100;
+  });
+
+  function goTo(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    if (pageId === 'page2' || pageId === 'page6') launchConfetti();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Stockage choix
+  const choices = { date: '', time: '', food: '', activity: '' };
+  
+  function saveDateTime() {
+    choices.date = document.getElementById('dateInput').value;
+    choices.time = document.getElementById('timeInput').value;
+  }
+
+  function choose(key, value) { 
+    choices[key] = value; 
+  }
+
+  // Config des coordonnées
+  const MON_NUMERO = "0684755797"; 
+  const MON_EMAIL = "blad.deborah@yahoo.com";
+
+  // Envoi par SMS
+  function sendSummarySMS() {
+    const message = `Détails de notre Date :\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const separator = isIOS ? '&' : '?';
+    window.location.href = `sms:${MON_NUMERO}${separator}body=${encodeURIComponent(message)}`;
+  }
+
+  // Envoi par Mail
+  function sendSummaryEmail() {
+    const subject = "Notre Date ! 💕";
+    const body = `Détails de notre Date :\n\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
+    window.location.href = `mailto:${MON_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+
+  function launchConfetti() {
+    const emojis = ['💕','💖','🌸','✨','💗','🌷','💝','🎀'];
+    for (let i = 0; i < 28; i++) {
+      const el = document.createElement('span');
+      el.className = 'confetti';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (2 + Math.random() * 3) + 's';
+      el.style.animationDelay = (Math.random() * 1.2) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
+    }
+  }
+
+  function addToCalendar() {
+    const dateVal = choices.date;
+    const timeVal = choices.time;
+
+    if (!dateVal || !timeVal) {
+      alert('Pas de date ou d\'heure enregistrée 💕');
+      return;
+    }
+
+    const dtStart = dateVal.replace(/-/g,'') + 'T' + timeVal.replace(/:/g,'') + '00';
+    const [h, m] = timeVal.split(':').map(Number);
+    const endH = String((h + 2) % 24).padStart(2, '0');
+    const dtEnd = dateVal.replace(/-/g,'') + 'T' + endH + timeVal.slice(2).replace(':','') + '00';
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//DateApp//FR',
+      'BEGIN:VEVENT',
+      'UID:' + Date.now() + '@dateapp',
+      'DTSTAMP:' + new Date().toISOString().replace(/[-:.]/g,'').slice(0,15) + 'Z',
+      'DTSTART:' + dtStart,
+      'DTEND:' + dtEnd,
+      'SUMMARY:💕 Notre date (${choices.food} / ${choices.activity}) 💕',
+      'DESCRIPTION:Au programme : manger du ${choices.food} et faire l\'activité : ${choices.activity} !',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'notre-date.ics';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+</script>
+</body>
+</html>
