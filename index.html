@@ -438,12 +438,17 @@
     window.location.href = `sms:${MON_NUMERO}${separator}body=${encodeURIComponent(message)}`;
   }
 
-  // Envoi par Mail
-  function sendSummaryEmail() {
-    const subject = "Notre Programme ! 💕";
-    const body = `Détails de notre rendez-vous :\n\n📅 Date : ${choices.date || 'Non spécifiée'}\n🕒 Heure : ${choices.time || 'Non spécifiée'}\n🍕 Menu : ${choices.food || 'Non spécifié'}\n🎉 Activité : ${choices.activity || 'Non spécifiée'}\n\nJe suis prêt·e ! 😘`;
-    window.location.href = `mailto:${MON_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  }
+  // Envoi par Mail corrigé
+function sendSummaryEmail() {
+  const subject = "Notre Programme !";
+  const body = `Details de notre rendez-vous :\n\nDate : ${choices.date || 'Non specifiee'}\nHeure : ${choices.time || 'Non specifiee'}\nMenu : ${choices.food || 'Non specifie'}\nActivite : ${choices.activity || 'Non specifiee'}`;
+  
+  // On nettoie les caractères spéciaux pour éviter les bugs de navigation
+  const mailtoUrl = `mailto:${MON_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+  // On force l'ouverture, même si le navigateur est capricieux
+  window.location.href = mailtoUrl;
+}
 
   function launchConfetti() {
     const emojis = ['💕','💖','🌸','✨','💗','🌷','💝','🎀'];
